@@ -28,7 +28,7 @@ export default function Heading(props) {
     const handleClose = () => setOpen(false);
     const [completed, setCompleted] = React.useState(props.completed);
     return (
-        <Grid container spacing={1} justifyContent="space-around" alignItems="center" >
+        <Grid container spacing={1} sx={{px: 5}} justifyContent="space-between" alignItems="center" >
         <Grid item  >
         <ToggleButton
   value="check"

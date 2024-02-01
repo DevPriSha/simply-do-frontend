@@ -1,31 +1,18 @@
 import * as React from "react";
 import { Grid } from "@mui/material";
 import TaskItem from "./TaskItem.js";
+import axios from 'axios';
+import { useState, useEffect } from 'react';
 
 export default function TaskList() {
-  let tasklist = [
-    {
-      id: 1,
-      title: "Completed APIs",
-      description: "I wanna die",
-      duedate: "2021-10-10",
-      completed: true,
-    },
-    {
-      id: 2,
-      title: "Completed APIs",
-      description: "I wanna die",
-      duedate: "2021-10-10",
-      completed: false,
-    },
-    {
-      id: 3,
-      title: "Completed APIs",
-      description: "I wanna die",
-      duedate: "2021-10-10",
-      completed: false,
-    },
-  ];
+    // use axios to get data from the database
+  const [tasklist, setTasklist] = useState([]);
+    useEffect(() => {
+        axios.get('http://localhost:8080/todolist').then((response) => {
+        setTasklist(response.data);
+        });
+    }, []);
+    if (!tasklist.length) return (<h2>No tasks! Add one now!</h2>);
   return (
     <Grid container spacing={2} justifyContent="center" alignItems="center">
       <Grid item xs={12}>
