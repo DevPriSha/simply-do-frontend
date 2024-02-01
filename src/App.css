@@ -36,3 +36,11 @@
     transform: rotate(360deg);
   }
 }
+
+/* Background styles */
+body {
+  /* background-image: url('https://i.pinimg.com/736x/84/4c/66/844c661efa64edbc6e5a324bff82982f.jpg'); */
+  background-image: url('https://static.vecteezy.com/system/resources/thumbnails/010/980/405/small/seamless-pattern-of-butterflies-paint-with-watercolor-for-designing-colorful-fabric-patterns-and-wallpaper-background-abstract-fantasy-flying-insects-background-vector.jpg');
+  /* background-image: url('https://media.istockphoto.com/id/1125769178/vector/flowing.jpg?s=612x612&w=0&k=20&c=IZ5tftCtJDj3Z_3idSpqWYKiRmO7Q6FIJCOcphy35aI='); */
+  background-position: center;
+}
