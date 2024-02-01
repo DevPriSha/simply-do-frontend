@@ -20,13 +20,11 @@ import Snackbar from "@mui/material/Snackbar";
 
 
 export default function AddTask() {
-  const [duedateValue, setValue] = useState(null);
   const [dropDown, setDropDown] = useState(false);
     const [title, setTitle] = useState("");
     const [description, setDesc] = useState("");
     const [duedate, setDuedate] = useState("");
   const handleSubmit = e => {
-    e.preventDefault();
     console.log("submitting");
     if (title === "") {
         <Snackbar autoHideDuration={6000} message="Title cannot be empty!" />;

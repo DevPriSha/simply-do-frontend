@@ -11,7 +11,8 @@ const MainGlass = styled('div')(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#111928bf' : '#ffffffbf',
   border: '1px solid',
   borderColor: theme.palette.mode === 'dark' ? '#ffffff20' : '#d1d5db4d',
-  padding: theme.spacing(1),
+  padding: theme.spacing(2),
+  paddingBottom: theme.spacing(4),
   borderRadius: '12px',
   textAlign: 'center',
   backdropFilter: 'blur(16px) saturate(180%)',
@@ -29,7 +30,7 @@ const App = () => {
 
   return (
     <Grid container spacing={2} justifyContent="center" alignItems="center" >
-    <Grid item lg={6} md={8} xs={12} m={3}  >
+    <Grid item lg={6} md={8} xs={12} m={3} >
     <MainGlass>
       <Heading />
       <AddTask />
