@@ -52,9 +52,10 @@ export default function AddTask() {
           </Stack>
 
           {/* DROP DOWN STUFF */}
-          <div style={{ display: dropDown ? "flex" : "none" }}>
+          <div style={{ display: dropDown ? "block" : "none" }}>
+            <Stack direction="row" justifyContent='space-between'>
             <InputBase
-              sx={{ ml: 1, flex: 1 }}
+              sx={{ ml: 1, flex: 1}}
               placeholder="Description"
               inputProps={{ "aria-label": "description" }}
             />
@@ -64,14 +65,17 @@ export default function AddTask() {
                   label="Due Date"
                   value={value}
                   onChange={(newValue) => setValue(newValue)}
-                  variant="inline"
+                  slotProps={{ textField: { variant: 'standard' } }}
+                //   make sure scroll is disabled in order to not break modal positioning
+                sx={{ display: 'block', mb: 10}}
                   disablePast
-                  sx={{ }}
+                  
                  
                   
                 />
               </DemoContainer>
             </LocalizationProvider>
+            </Stack>
           </div>
         </Stack>
       </Paper>
