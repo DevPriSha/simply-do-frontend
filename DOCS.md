@@ -15,6 +15,8 @@
 - MUI Components
 - Axios
 
+### Note: Has been developed and tested on M1 Macbook Air 2020.
+
 ## Backend Project
 - The backend project is a simple Spring Boot project with a single controller and a single service.
 - Link: [Simply Do Backend](https://github.com/DevPriSha/leap-sample-simplydo)
