@@ -17,26 +17,22 @@ import axios from "axios";
 import { useEffect } from "react";
 import Snackbar from "@mui/material/Snackbar";
 
-
-
 export default function AddTask() {
   const [dropDown, setDropDown] = useState(false);
-    const [title, setTitle] = useState("");
-    const [description, setDesc] = useState("");
-    const [duedate, setDuedate] = useState("");
-  const handleSubmit = e => {
-    console.log("submitting");
+  const [title, setTitle] = useState("");
+  const [description, setDesc] = useState("");
+  const [duedate, setDuedate] = useState("");
+  const handleSubmit = (e) => {
     if (title === "") {
-        <Snackbar autoHideDuration={6000} message="Title cannot be empty!" />;
-        return;
+      <Snackbar autoHideDuration={6000} message="Title cannot be empty!" />;
+      return;
     }
-    console.log(title, description, duedate);
     axios
       .post("http://localhost:8080/todolist", {
-        "title": title,
-        "description": description,
-        "duedate": duedate,
-        "completed": false
+        title: title,
+        description: description,
+        duedate: duedate,
+        completed: false,
       })
       .then((response) => {
         <Snackbar autoHideDuration={6000} message={response.statusText} />;
@@ -44,7 +40,7 @@ export default function AddTask() {
       .catch((error) => {
         <Snackbar autoHideDuration={6000} message={error} />;
       });
-  }
+  };
   return (
     <Grid container>
       <Paper
@@ -60,9 +56,9 @@ export default function AddTask() {
               placeholder="Add Task"
               inputProps={{ "aria-label": "add task" }}
               onSubmit={handleSubmit}
-                onChange={(event) => {
-                    setTitle(event.target.value);
-                }}
+              onChange={(event) => {
+                setTitle(event.target.value);
+              }}
             />
             <IconButton
               sx={{ p: "10px", alignItems: "right" }}
@@ -88,7 +84,11 @@ export default function AddTask() {
 
           {/* DROP DOWN STUFF */}
           <div style={{ display: dropDown ? "block" : "none" }}>
-            <Stack direction="row" justifyContent="space-between" alignItems="center">
+            <Stack
+              direction="row"
+              justifyContent="space-between"
+              alignItems="center"
+            >
               <InputBase
                 id="description"
                 multiline
@@ -96,8 +96,8 @@ export default function AddTask() {
                 placeholder="Description"
                 inputProps={{ "aria-label": "description" }}
                 onChange={(event) => {
-                    setDesc(event.target.value);
-                  }}
+                  setDesc(event.target.value);
+                }}
               />
               <LocalizationProvider
                 dateAdapter={AdapterDayjs}
@@ -110,7 +110,7 @@ export default function AddTask() {
                   value={duedate}
                   onChange={(newValue) => setDuedate(newValue)}
                   slotProps={{ textField: { variant: "standard" } }}
-                  sx={{ mx: "10px", flex: 1}}
+                  sx={{ mx: "10px", flex: 1 }}
                   disablePast
                 />
               </LocalizationProvider>

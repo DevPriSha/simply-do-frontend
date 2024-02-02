@@ -18,6 +18,8 @@ import {
   DialogTitle,
   TextField,
 } from "@mui/material";
+import axios from "axios";
+import Snackbar from "@mui/material/Snackbar";
 import Button from "@mui/material/Button";
 import { useState } from "react";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -27,8 +29,36 @@ import "dayjs/locale/en-in";
 import dayjs from "dayjs";
 
 export default function TaskItem(props) {
-    const [duedate, setDuedate] = useState(dayjs(props.date));
-  const [value, setValue] = useState(null);
+  const [title, setTitle] = useState(props.title);
+  const [description, setDesc] = useState(props.description);
+  const [duedate, setDuedate] = useState(dayjs(props.date));
+  const handleSubmit = (e) => {
+    if (title === "") {
+      <Snackbar autoHideDuration={6000} message="Title cannot be empty!" />;
+      return;
+    }
+    axios
+      .put(`http://localhost:8080/todolist/${props.id}`, {
+        id: props.id,
+        title: title,
+        description: description,
+        duedate: duedate,
+        completed: false,
+      })
+      .then((response) => {
+        <Snackbar autoHideDuration={6000} message={response.statusText} />;
+      })
+      .catch((error) => {
+        <Snackbar autoHideDuration={6000} message={error} />;
+      });
+  };
+
+  const handleDelete = (e) => {
+    axios.delete(`http://localhost:8080/todolist/${props.id}`);
+    // refresh the page
+    window.location.reload();
+  };
+
   const [open, setOpen] = React.useState(false);
   const handleClickOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -67,7 +97,12 @@ export default function TaskItem(props) {
           selected={completed}
           onChange={() => {
             setCompleted(!completed);
-            // update the database
+            console.log(completed, props.id);
+            axios.patch(`http://localhost:8080/todolist/${props.id}/completed`, `${!completed}`, {
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+              });
           }}
         >
           <CheckIcon />
@@ -94,7 +129,6 @@ export default function TaskItem(props) {
               sx={{
                 textDecoration: completed ? "line-through" : "",
                 whiteSpace: "normal",
-                
               }}
             >
               {props.description}
@@ -123,24 +157,25 @@ export default function TaskItem(props) {
             </IconButton>
           </Grid>
           <Grid item xs={6}>
-            <IconButton aria-label="delete" color="error" size="large">
+            <IconButton
+              aria-label="delete"
+              color="error"
+              size="large"
+              onClick={handleDelete}
+            >
               <DeleteIcon />
             </IconButton>
           </Grid>
         </Grid>
       </Grid>
-      
+
       <Dialog
         open={open}
         onClose={handleClose}
         PaperProps={{
           component: "form",
           onSubmit: (event) => {
-            event.preventDefault();
-            const formData = new FormData(event.currentTarget);
-            const formJson = Object.fromEntries(formData.entries());
-            const email = formJson.email;
-            console.log(email);
+            handleSubmit(event);
             handleClose();
           },
         }}
@@ -157,6 +192,9 @@ export default function TaskItem(props) {
             label="Task Title"
             fullWidth
             variant="standard"
+            onChange={(event) => {
+              setTitle(event.target.value);
+            }}
           />
           <TextField
             defaultValue={props.description}
@@ -166,33 +204,36 @@ export default function TaskItem(props) {
             label="Task Description"
             fullWidth
             variant="standard"
+            onChange={(event) => {
+              setDesc(event.target.value);
+            }}
           />
           <LocalizationProvider
-                dateAdapter={AdapterDayjs}
-                adapterLocale="en-in"
-              >
-                <DateTimePicker
-                  id="duedate"
-                  margin="dense"
-                  label="Due Date"
-                  defaultValue={dayjs(props.date)}
-                    value={duedate}
-                  onChange={(newValue) => setDuedate(newValue)}
-                  slotProps={{ textField: { variant: "standard" } }}
-                  sx={{  flex: 1}}
-                  disablePast
-                />
-              </LocalizationProvider>
+            dateAdapter={AdapterDayjs}
+            adapterLocale="en-in"
+          >
+            <DateTimePicker
+              id="duedate"
+              label="Due Date"
+              defaultValue={dayjs(props.date)}
+              value={duedate}
+              onChange={(newValue) => setDuedate(newValue)}
+              slotProps={{ textField: { variant: "standard" } }}
+              sx={{ flex: 1 }}
+              disablePast
+            />
+          </LocalizationProvider>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
-          <Button type="submit">Edit</Button>
+          <Button type="submit" onSubmit={handleSubmit}>
+            Edit
+          </Button>
         </DialogActions>
       </Dialog>
       <Grid item xs={12}>
-      <Divider orientation="horizontal" />
+        <Divider orientation="horizontal" />
       </Grid>
     </Grid>
-    
   );
 }
